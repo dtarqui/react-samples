@@ -1,42 +1,68 @@
-import React, { Component } from 'react';
+import React, {
+  useState
+} from 'react';
 import './App.css';
 import Person from "./Person/Person.js"
 
-class App extends Component {
-  state = {
-    persons: [
-      { name: 'Cosme', age:23},
-      { name: 'Fulano', age:24},
-      { name: 'Fhulano', age:25},
+const app = () => {
+  const [personState, setPersonsState] = useState({
+    persons: [{
+        name: 'Cosme',
+        age: 23
+      },
+      {
+        name: 'Fulano',
+        age: 24
+      },
+      {
+        name: 'Fhulano',
+        age: 25
+      },
     ],
     otherState: 'some value'
-  }
+  });
 
-  switchNameHandler = () => {
-    console.log(this.state)
-    // DON'T DO THIS this.state.persons[0].name = 'Fulanero'
-    this.setState({
-      persons: [
-        { name: 'Fulanero', age:23},
-        { name: 'Fulano', age:24},
+  const switchNameHandler = (newName) => {
+    setPersonsState({
+      persons: [{
+          name: newName,
+          age: 23
+        },
+        {
+          name: 'Fulano',
+          age: 24
+        },
       ],
     })
   }
 
-  render() {
-    return (
-      <div className="App">
-        <h1>React App</h1>
-        <p>Work</p>
-        <button onClick={this.switchNameHandler}>Switch Name</button>
-        <Person name='Cosme' age='23' />
-        <Person name='Fulano' age='24'>My Hobbies: Racing </Person>
-        <Person name='Fhulano' age='25' />
-        {/* <Person name={this.state}></Person> */}
-      </div>
-    );
-    // return React.createElement('div', {className: 'App'}, React.createElement())
+  const nameChangeHandler = (event) => {
+    setPersonsState({
+      persons: [{
+          name: event.target.value,
+          age: 50
+        },
+        {
+          name: 'Fulano',
+          age: 24
+        },
+      ],
+    })
   }
+
+  return (
+    <div className="App">
+      <h1>React App</h1>
+      <p>Work</p>
+      <button onClick={()=> switchNameHandler('Fhulanero')}>Switch Name</button>
+      <Person name={personState.persons[0].name} age={personState.persons[0].age} />
+      <Person click={switchNameHandler.bind(this, 'Cosme')} name='Fulano' age='24'>My Hobbies: Racing </Person>
+      <Person name='Fhulano' age='25' />
+      <Person name="Dude" age='90' changed={nameChangeHandler}></Person>
+    </div>
+  );
+  // return React.createElement('div', {className: 'App'}, React.createElement())
+
 }
 
-export default App;
+export default app;
